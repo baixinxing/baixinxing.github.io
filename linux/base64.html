@@ -1,6 +1,760 @@
-<h1 id="base64">base64</h1>
-<h4 id="-">手册</h4>
-<pre class="editor-colors"><code>用法 base64 [选项]... [文件]
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body
+{
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+
+    background-color: white;
+    border-radius: 3px;
+    border: 3px solid #EEE;
+    box-shadow: inset 0 0 0 1px #CECECE;
+    font-family: Helvetica, arial, freesans, clean, sans-serif;
+    max-width: 912px;
+    padding: 30px;
+    margin: 2em auto;
+
+    color:#333333;
+}
+
+
+.body-classic{
+  color:#444;
+  font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', "Hiragino Sans GB", "STXihei", "微软雅黑", serif;
+  font-size:16px;
+  line-height:1.5em;
+  background:#fefefe;
+  width: 45em;
+  margin: 10px auto;
+  padding: 1em;
+  outline: 1300px solid #FAFAFA;
+}
+
+body>:first-child
+{
+  margin-top:0!important;
+}
+
+body>:last-child
+{
+  margin-bottom:0!important;
+}
+
+blockquote,dl,ol,p,pre,table,ul {
+  border: 0;
+  margin: 15px 0;
+  padding: 0;
+}
+
+body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+body a:hover {
+  text-decoration: underline;
+}
+
+body a.absent
+{
+  color:#c00;
+}
+
+body a.anchor
+{
+  display:block;
+  padding-left:30px;
+  margin-left:-30px;
+  cursor:pointer;
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0
+}
+
+/*h4,h5,h6{ font-weight: bold; }*/
+
+.octicon{
+  font:normal normal 16px sans-serif;
+  width: 1em;
+  height: 1em;
+  line-height:1;
+  display:inline-block;
+  text-decoration:none;
+  -webkit-font-smoothing:antialiased
+}
+
+.octicon-link {
+  background: url("data:image/svg+xml;utf8,<?xml version='1.0' standalone='no'?> <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'> <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 832'> <metadata>Copyright (C) 2013 by GitHub</metadata> <!-- scale(0.01565557729941) --> <path transform='' d='M768 64h-192s-254 0-256 256c0 22 3 43 8 64h137c-11-19-18-41-18-64 0-128 128-128 128-128h192s128 0 128 128-128 128-128 128 0 64-64 128h64s256 0 256-256-256-256-256-256z m-72 192h-137c11 19 18 41 18 64 0 128-128 128-128 128h-192s-128 0-128-128 128-128 128-128-4-65 66-128h-66s-256 0-256 256 256 256 256 256h192s256 0 256-256c0-22-4-44-8-64z'/> </svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+.octicon-link:before{
+  content:'\a0';
+}
+
+body h1,body h2,body h3,body h4,body h5,body h6{
+  margin:1em 0 15px;
+  padding:0;
+  font-weight:bold;
+  line-height:1.7;
+  cursor:text;
+  position:relative
+}
+
+body h1 .octicon-link,body h2 .octicon-link,body h3 .octicon-link,body h4 .octicon-link,body h5 .octicon-link,body h6 .octicon-link{
+  display:none;
+  color:#000
+}
+
+body h1:hover a.anchor,body h2:hover a.anchor,body h3:hover a.anchor,body h4:hover a.anchor,body h5:hover a.anchor,body h6:hover a.anchor{
+  text-decoration:none;
+  line-height:1;
+  padding-left:0;
+  margin-left:-22px;
+  top:15%
+}
+
+body h1:hover a.anchor .octicon-link,body h2:hover a.anchor .octicon-link,body h3:hover a.anchor .octicon-link,body h4:hover a.anchor .octicon-link,body h5:hover a.anchor .octicon-link,body h6:hover a.anchor .octicon-link{
+  display:inline-block
+}
+
+body h1 tt,body h1 code,body h2 tt,body h2 code,body h3 tt,body h3 code,body h4 tt,body h4 code,body h5 tt,body h5 code,body h6 tt,body h6 code{
+  font-size:inherit
+}
+
+body h1{
+  font-size:2.5em;
+  border-bottom:1px solid #ddd
+}
+
+body h2{
+  font-size:2em;
+  border-bottom:1px solid #eee
+}
+
+body h3{
+  font-size:1.5em
+}
+
+body h4{
+  font-size:1.2em
+}
+
+body h5{
+  font-size:1em
+}
+
+body h6{
+  color:#777;
+  font-size:1em
+}
+
+body p,body blockquote,body ul,body ol,body dl,body table,body pre{
+  margin:15px 0
+}
+
+body h1 tt,body h1 code,body h2 tt,body h2 code,body h3 tt,body h3 code,body h4 tt,body h4 code,body h5 tt,body h5 code,body h6 tt,body h6 code
+{
+  font-size:inherit;
+}
+
+
+body hr
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC);
+  background-repeat: repeat-x;
+  /*background:transparent url(http://overblown.net/files/markdown/dirty-shade.png) repeat-x 0 0;*/
+  background-color: transparent;
+  background-position: 0;
+  border:0 none;
+  color:#ccc;
+  height:4px;
+  margin:15px 0;
+  padding:0;
+}
+
+body li p.first
+{
+  display:inline-block;
+}
+
+body ul,body ol
+{
+  padding-left:30px;
+}
+
+body ul.no-list,body ol.no-list
+{
+  list-style-type:none;
+  padding:0;
+}
+
+body ul ul,body ul ol,body ol ol,body ol ul
+{
+  margin-bottom:0;
+  margin-top:0;
+}
+
+body dl
+{
+  padding:0;
+}
+
+body dl dt
+{
+  font-size:14px;
+  font-style:italic;
+  font-weight:700;
+  margin-top:15px;
+  padding:0;
+}
+
+body dl dd
+{
+  margin-bottom:15px;
+  padding:0 15px;
+}
+
+body blockquote
+{
+  border-left:4px solid #DDD;
+  color:#777;
+  padding:0 15px;
+}
+
+body blockquote>:first-child
+{
+  margin-top:0;
+}
+
+body blockquote>:last-child
+{
+  margin-bottom:0;
+}
+
+body table
+{
+  display:block;
+  overflow:auto;
+  width:100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding: 0;
+}
+
+body table th
+{
+  font-weight:700;
+}
+
+body table th,body table td
+{
+  border:1px solid #ddd;
+  padding:6px 13px;
+}
+
+body table tr
+{
+  background-color:#fff;
+  border-top:1px solid #ccc;
+}
+
+body table tr:nth-child(2n)
+{
+  background-color:#f8f8f8;
+}
+
+body img
+{
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+  max-width:100%;
+}
+
+body span.frame
+{
+  display:block;
+  overflow:hidden;
+}
+
+body span.frame>span
+{
+  border:1px solid #ddd;
+  display:block;
+  float:left;
+  margin:13px 0 0;
+  overflow:hidden;
+  padding:7px;
+  width:auto;
+}
+
+body span.frame span img
+{
+  display:block;
+  float:left;
+}
+
+body span.frame span span
+{
+  clear:both;
+  color:#333;
+  display:block;
+  padding:5px 0 0;
+}
+
+body span.align-center
+{
+  clear:both;
+  display:block;
+  overflow:hidden;
+}
+
+body span.align-center>span
+{
+  display:block;
+  margin:13px auto 0;
+  overflow:hidden;
+  text-align:center;
+}
+
+body span.align-center span img
+{
+  margin:0 auto;
+  text-align:center;
+}
+
+body span.align-right
+{
+  clear:both;
+  display:block;
+  overflow:hidden;
+}
+
+body span.align-right>span
+{
+  display:block;
+  margin:13px 0 0;
+  overflow:hidden;
+  text-align:right;
+}
+
+body span.align-right span img
+{
+  margin:0;
+  text-align:right;
+}
+
+body span.float-left
+{
+  display:block;
+  float:left;
+  margin-right:13px;
+  overflow:hidden;
+}
+
+body span.float-left span
+{
+  margin:13px 0 0;
+}
+
+body span.float-right
+{
+  display:block;
+  float:right;
+  margin-left:13px;
+  overflow:hidden;
+}
+
+body span.float-right>span
+{
+  display:block;
+  margin:13px auto 0;
+  overflow:hidden;
+  text-align:right;
+}
+
+body code,body tt
+{
+  background-color:#f8f8f8;
+  border:1px solid #ddd;
+  border-radius:3px;
+  margin:0 2px;
+  padding:0 5px;
+}
+
+body code
+{
+  white-space:nowrap;
+}
+
+
+code,pre{
+  font-family:Consolas, "Liberation Mono", Courier, monospace;
+  font-size:12px
+}
+
+body pre>code
+{
+  background:transparent;
+  border:none;
+  margin:0;
+  padding:0;
+  white-space:pre;
+}
+
+body .highlight pre,body pre
+{
+  background-color:#f8f8f8;
+  border:1px solid #ddd;
+  font-size:13px;
+  line-height:19px;
+  overflow:auto;
+  padding:6px 10px;
+  border-radius:3px
+}
+
+body pre code,body pre tt
+{
+  background-color:transparent;
+  border:none;
+  margin:0;
+  padding:0;
+}
+
+body .task-list{
+  list-style-type:none;
+  padding-left:10px
+}
+
+.task-list-item{
+  padding-left:20px
+}
+
+.task-list-item label{
+  font-weight:normal
+}
+
+.task-list-item.enabled label{
+  cursor:pointer
+}
+
+.task-list-item+.task-list-item{
+  margin-top:5px
+}
+
+.task-list-item-checkbox{
+  float:left;
+  margin-left:-20px;
+  margin-top:7px
+}
+
+
+.highlight{
+  background:#ffffff
+}
+
+.highlight .c{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .err{
+  color:#a61717;
+  background-color:#e3d2d2
+}
+
+.highlight .k{
+  font-weight:bold
+}
+
+.highlight .o{
+  font-weight:bold
+}
+
+.highlight .cm{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .cp{
+  color:#999999;
+  font-weight:bold
+}
+
+.highlight .c1{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .cs{
+  color:#999999;
+  font-weight:bold;
+  font-style:italic
+}
+
+.highlight .gd{
+  color:#000000;
+  background-color:#ffdddd
+}
+
+.highlight .gd .x{
+  color:#000000;
+  background-color:#ffaaaa
+}
+
+.highlight .ge{
+  font-style:italic
+}
+
+.highlight .gr{
+  color:#aa0000
+}
+
+.highlight .gh{
+  color:#999999
+}
+
+.highlight .gi{
+  color:#000000;
+  background-color:#ddffdd
+}
+
+.highlight .gi .x{
+  color:#000000;
+  background-color:#aaffaa
+}
+
+.highlight .go{
+  color:#888888
+}
+
+.highlight .gp{
+  color:#555555
+}
+
+.highlight .gs{
+  font-weight:bold
+}
+
+.highlight .gu{
+  color:#800080;
+  font-weight:bold
+}
+
+.highlight .gt{
+  color:#aa0000
+}
+
+.highlight .kc{
+  font-weight:bold
+}
+
+.highlight .kd{
+  font-weight:bold
+}
+
+.highlight .kn{
+  font-weight:bold
+}
+
+.highlight .kp{
+  font-weight:bold
+}
+
+.highlight .kr{
+  font-weight:bold
+}
+
+.highlight .kt{
+  color:#445588;
+  font-weight:bold
+}
+
+.highlight .m{
+  color:#009999
+}
+
+.highlight .s{
+  color:#d14
+}
+
+.highlight .n{
+  color:#333333
+}
+
+.highlight .na{
+  color:#008080
+}
+
+.highlight .nb{
+  color:#0086B3
+}
+
+.highlight .nc{
+  color:#445588;
+  font-weight:bold
+}
+
+.highlight .no{
+  color:#008080
+}
+
+.highlight .ni{
+  color:#800080
+}
+
+.highlight .ne{
+  color:#990000;
+  font-weight:bold
+}
+
+.highlight .nf{
+  color:#990000;
+  font-weight:bold
+}
+
+.highlight .nn{
+  color:#555555
+}
+
+.highlight .nt{
+  color:#000080
+}
+
+.highlight .nv{
+  color:#008080
+}
+
+.highlight .ow{
+  font-weight:bold
+}
+
+.highlight .w{
+  color:#bbbbbb
+}
+
+.highlight .mf{
+  color:#009999
+}
+
+.highlight .mh{
+  color:#009999
+}
+
+.highlight .mi{
+  color:#009999
+}
+
+.highlight .mo{
+  color:#009999
+}
+
+.highlight .sb{
+  color:#d14
+}
+
+.highlight .sc{
+  color:#d14
+}
+
+.highlight .sd{
+  color:#d14
+}
+
+.highlight .s2{
+  color:#d14
+}
+
+.highlight .se{
+  color:#d14
+}
+
+.highlight .sh{
+  color:#d14
+}
+
+.highlight .si{
+  color:#d14
+}
+
+.highlight .sx{
+  color:#d14
+}
+
+.highlight .sr{
+  color:#009926
+}
+
+.highlight .s1{
+  color:#d14
+}
+
+.highlight .ss{
+  color:#990073
+}
+
+.highlight .bp{
+  color:#999999
+}
+
+.highlight .vc{
+  color:#008080
+}
+
+.highlight .vg{
+  color:#008080
+}
+
+.highlight .vi{
+  color:#008080
+}
+
+.highlight .il{
+  color:#009999
+}
+
+.highlight .gc{
+  color:#999;
+  background-color:#EAF2F5
+}
+
+.type-csharp .highlight .k{
+  color:#0000FF
+}
+
+.type-csharp .highlight .kt{
+  color:#0000FF
+}
+
+.type-csharp .highlight .nf{
+  color:#000000;
+  font-weight:normal
+}
+
+.type-csharp .highlight .nc{
+  color:#2B91AF
+}
+
+.type-csharp .highlight .nn{
+  color:#000000
+}
+
+.type-csharp .highlight .s{
+  color:#A31515
+}
+
+.type-csharp .highlight .sc{
+  color:#A31515
+}
+</style><title>base64</title></head><body><h1>
+<a name="user-content-base64" class="anchor" href="#base64" aria-hidden="true"><span class="octicon octicon-link"></span></a>base64</h1>
+
+<h4>
+<a name="user-content-%E6%89%8B%E5%86%8C" class="anchor" href="#%E6%89%8B%E5%86%8C" aria-hidden="true"><span class="octicon octicon-link"></span></a>手册</h4>
+
+<pre><code>用法 base64 [选项]... [文件]
 
 使用 Base64 编码/解码文件或标准输入输出。
 
@@ -13,14 +767,37 @@
       --version         显示版本信息并退出
 
 如果没有指定文件，或者文件为"-"，则从标准输入读取。
-</code></pre><h4 id="-">例子</h4>
-<pre class="editor-colors"><code class="lang-bash"><div>&nbsp;</div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>输出aGVsbG8gd29yZAo=</span></span></div><div><span class="source shell">base64 <span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>回车</span></span></div><div><span class="source shell">hello word <span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>回车</span></span></div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>ctrl+d</span></span></div><div>&nbsp;</div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>输出hello word</span></span></div><div><span class="source shell">base64 -d <span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>回车</span></span></div><div><span class="source shell">aGVsbG8gd29yZAo= <span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>回车</span></span></div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>ctrl+d</span></span></div><div>&nbsp;</div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>输出aGVsbG8gd29yZAo=</span></span></div><div><span class="source shell"><span class="support function builtin shell">echo</span> hello word<span class="keyword operator pipe shell">|</span>base64</span></div><div>&nbsp;</div><div><span class="source shell"><span class="comment line number-sign shell"><span class="punctuation definition comment shell">#</span>输出hello word</span></span></div><div><span class="source shell"><span class="support function builtin shell">echo</span> aGVsbG8gd29yZAo=<span class="keyword operator pipe shell">|</span>base64 -d</span></div></code></pre>
-<h4 id="-">算法流程</h4>
+
+</code></pre>
+
+<h4>
+<a name="user-content-%E4%BE%8B%E5%AD%90" class="anchor" href="#%E4%BE%8B%E5%AD%90" aria-hidden="true"><span class="octicon octicon-link"></span></a>例子</h4>
+
+<div class="highlight highlight-bash"><pre>
+<span class="c">#输出aGVsbG8gd29yZAo=</span>
+base64 <span class="c">#回车</span>
+hello word <span class="c">#回车</span>
+<span class="c">#ctrl+d</span>
+
+<span class="c">#输出hello word</span>
+base64 -d <span class="c">#回车</span>
+<span class="nv">aGVsbG8gd29yZAo</span><span class="o">=</span> <span class="c">#回车</span>
+<span class="c">#ctrl+d</span>
+
+<span class="c">#输出aGVsbG8gd29yZAo=</span>
+<span class="nb">echo </span>hello word<span class="p">|</span>base64
+
+<span class="c">#输出hello word</span>
+<span class="nb">echo </span><span class="nv">aGVsbG8gd29yZAo</span><span class="o">=</span><span class="p">|</span>base64 -d
+
+</pre></div>
+
+<h4>
+<a name="user-content-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B" class="anchor" href="#%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法流程</h4>
+
 <ul>
-<li><h5 id="64-">64个字符</h5>
-</li>
-</ul>
-<pre class="editor-colors"><code class="lang-base64">　　0　A　　17　R　　　34　i　　　51　z
+<li>##### 64个字符</li>
+</ul><pre lang="base64"><code>　　0　A　　17　R　　　34　i　　　51　z
 
 　　1　B　　18　S　　　35　j　　　52　0
 
@@ -54,131 +831,132 @@
 
 　　16　Q　　33　h　　　50　y
 </code></pre>
+
 <ul>
-<li><h5 id="1-">1字节解码算法</h5>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">字节数</th>
-<th style="text-align:left">1字节</th>
-</tr>
-</thead>
+<li>##### 1字节解码算法</li>
+</ul><table>
+<thead><tr>
+<th align="left">字节数</th>
+<th align="left">1字节</th>
+</tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left">字符</td>
-<td style="text-align:left">A</td>
+<td align="left">字符</td>
+<td align="left">A</td>
 </tr>
 <tr>
-<td style="text-align:left">二进制</td>
-<td style="text-align:left">01000001</td>
+<td align="left">二进制</td>
+<td align="left">01000001</td>
 </tr>
 <tr>
-<td style="text-align:left">末尾补4个0</td>
-<td style="text-align:left">01000001 0000</td>
+<td align="left">末尾补4个0</td>
+<td align="left">01000001 0000</td>
 </tr>
 <tr>
-<td style="text-align:left">6个算一个字节</td>
-<td style="text-align:left">010000 010000</td>
+<td align="left">6个算一个字节</td>
+<td align="left">010000 010000</td>
 </tr>
 <tr>
-<td style="text-align:left">十进制</td>
-<td style="text-align:left">16 16</td>
+<td align="left">十进制</td>
+<td align="left">16 16</td>
 </tr>
 <tr>
-<td style="text-align:left">匹配64个字符</td>
-<td style="text-align:left">Q Q</td>
+<td align="left">匹配64个字符</td>
+<td align="left">Q Q</td>
 </tr>
 <tr>
-<td style="text-align:left">结果</td>
-<td style="text-align:left">QQ==</td>
+<td align="left">结果</td>
+<td align="left">QQ==</td>
 </tr>
 </tbody>
-</table>
-<ul>
-<li><h5 id="2-">2字节解码算法</h5>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">字节数</th>
-<th style="text-align:left">2字节</th>
-</tr>
-</thead>
+</table><ul>
+<li>##### 2字节解码算法</li>
+</ul><table>
+<thead><tr>
+<th align="left">字节数</th>
+<th align="left">2字节</th>
+</tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left">字符</td>
-<td style="text-align:left">BC</td>
+<td align="left">字符</td>
+<td align="left">BC</td>
 </tr>
 <tr>
-<td style="text-align:left">二进制</td>
-<td style="text-align:left">01000010 01000011</td>
+<td align="left">二进制</td>
+<td align="left">01000010 01000011</td>
 </tr>
 <tr>
-<td style="text-align:left">末尾补2个0</td>
-<td style="text-align:left">01000010 01000011 00</td>
+<td align="left">末尾补2个0</td>
+<td align="left">01000010 01000011 00</td>
 </tr>
 <tr>
-<td style="text-align:left">6个算一个字节</td>
-<td style="text-align:left">010000 100100 001100</td>
+<td align="left">6个算一个字节</td>
+<td align="left">010000 100100 001100</td>
 </tr>
 <tr>
-<td style="text-align:left">十进制</td>
-<td style="text-align:left">16 36 12</td>
+<td align="left">十进制</td>
+<td align="left">16 36 12</td>
 </tr>
 <tr>
-<td style="text-align:left">匹配64个字符</td>
-<td style="text-align:left">QkM</td>
+<td align="left">匹配64个字符</td>
+<td align="left">QkM</td>
 </tr>
 <tr>
-<td style="text-align:left">结果</td>
-<td style="text-align:left">QkM=</td>
+<td align="left">结果</td>
+<td align="left">QkM=</td>
 </tr>
 </tbody>
-</table>
-<ul>
-<li><h5 id="3-">3字节解码算法</h5>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">字节数</th>
-<th style="text-align:left">3字节</th>
-</tr>
-</thead>
+</table><ul>
+<li>##### 3字节解码算法</li>
+</ul><table>
+<thead><tr>
+<th align="left">字节数</th>
+<th align="left">3字节</th>
+</tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left">字符</td>
-<td style="text-align:left">Man</td>
+<td align="left">字符</td>
+<td align="left">Man</td>
 </tr>
 <tr>
-<td style="text-align:left">二进制</td>
-<td style="text-align:left">010011010110000101101110</td>
+<td align="left">二进制</td>
+<td align="left">010011010110000101101110</td>
 </tr>
 <tr>
-<td style="text-align:left">末尾不补0</td>
-<td style="text-align:left">010011010110000101101110</td>
+<td align="left">末尾不补0</td>
+<td align="left">010011010110000101101110</td>
 </tr>
 <tr>
-<td style="text-align:left">6个算一个字节</td>
-<td style="text-align:left">010011 010110 000101 101110</td>
+<td align="left">6个算一个字节</td>
+<td align="left">010011 010110 000101 101110</td>
 </tr>
 <tr>
-<td style="text-align:left">十进制</td>
-<td style="text-align:left">19 22 5 46</td>
+<td align="left">十进制</td>
+<td align="left">19 22 5 46</td>
 </tr>
 <tr>
-<td style="text-align:left">匹配64个字符</td>
-<td style="text-align:left">T W F u</td>
+<td align="left">匹配64个字符</td>
+<td align="left">T W F u</td>
 </tr>
 <tr>
-<td style="text-align:left">结果</td>
-<td style="text-align:left">TWFu</td>
+<td align="left">结果</td>
+<td align="left">TWFu</td>
 </tr>
 </tbody>
-</table>
-<h4 id="php-">PHP模拟实现</h4>
-<pre class="editor-colors"><code class="lang-php"><div><span class="text html php"><span class="meta embedded block php"><span class="punctuation section embedded begin php">&lt;?php</span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>模拟实现base64加密</span></span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="source php">  <span class="variable other php"><span class="punctuation definition variable php">$</span>base64</span><span class="keyword operator assignment php">=</span><span class="string quoted single php"><span class="punctuation definition string begin php">'</span><span class="meta string-contents quoted single php">ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/</span><span class="punctuation definition string end php">'</span></span><span class="punctuation terminator expression php">;</span></span></span></span></div><div>&nbsp;</div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>1个字节测试</span></span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>echo implode(array_map(function($v) use($base64){return $base64[bindec(str_pad($v,8,'0',STR_PAD_LEFT))];},str_split(sprintf("0%b",ord('a')).'0000',6)),'')."==\n";</span></span></span></span></div><div>&nbsp;</div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>2个字节测试</span></span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>echo implode(array_map(function($v) use($base64){ return $base64[bindec($v)];},str_split(implode(array_map(function($v){ return sprintf('0%b',ord($v)) ;},str_split('bc',1))).'00',6)),'')."=\n";</span></span></span></span></div><div>&nbsp;</div><div><span class="text html php"><span class="meta embedded block php"><span class="source php"><span class="punctuation whitespace comment leading php">  </span><span class="comment line double-slash php"><span class="punctuation definition comment php">//</span>3个字节测试</span></span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="source php">  <span class="support function construct php">echo</span> <span class="support function string php">implode</span>(<span class="support function array php">array_map</span>(<span class="meta function closure php"><span class="storage type function php">function</span><span class="punctuation definition parameters begin php">(</span><span class="meta function arguments php"><span class="meta function argument no-default php"><span class="variable other php"><span class="punctuation definition variable php">$</span>v</span></span></span><span class="punctuation definition parameters end php">)</span> <span class="keyword other function use php">use</span><span class="punctuation definition parameters begin php">(</span><span class="meta function closure use php"><span class="variable other php"><span class="punctuation definition variable php">$</span>base64</span></span><span class="punctuation definition parameters end php">)</span>{</span> <span class="keyword control php">return</span> <span class="variable other php"><span class="punctuation definition variable php">$</span>base64</span><span class="punctuation section array begin php">[</span><span class="support function math php">bindec</span>(<span class="variable other php"><span class="punctuation definition variable php">$</span>v</span>)<span class="punctuation section array end php">]</span><span class="punctuation terminator expression php">;</span> <span class="punctuation section scope end php">}</span>,<span class="support function string php">str_split</span>(<span class="support function string php">implode</span>(<span class="support function array php">array_map</span>(<span class="meta function closure php"><span class="storage type function php">function</span><span class="punctuation definition parameters begin php">(</span><span class="meta function arguments php"><span class="meta function argument no-default php"><span class="variable other php"><span class="punctuation definition variable php">$</span>v</span></span></span><span class="punctuation definition parameters end php">)</span>{</span> <span class="keyword control php">return</span> <span class="support function string php">sprintf</span>(<span class="string quoted single php"><span class="punctuation definition string begin php">'</span><span class="meta string-contents quoted single php">0%b</span><span class="punctuation definition string end php">'</span></span>,<span class="support function string php">ord</span>(<span class="variable other php"><span class="punctuation definition variable php">$</span>v</span>))<span class="punctuation terminator expression php">;</span> <span class="punctuation section scope end php">}</span>,<span class="support function string php">str_split</span>(<span class="string quoted single php"><span class="punctuation definition string begin php">'</span><span class="meta string-contents quoted single php">Man</span><span class="punctuation definition string end php">'</span></span>,<span class="constant numeric php">1</span>)),<span class="string quoted single php"><span class="punctuation definition string begin php">'</span><span class="punctuation definition string end php">'</span></span>),<span class="constant numeric php">6</span>)))<span class="keyword operator string php">.</span><span class="string quoted double php"><span class="punctuation definition string begin php">"</span><span class="meta string-contents quoted double php"><span class="constant character escape php">\n</span></span><span class="punctuation definition string end php">"</span></span><span class="punctuation terminator expression php">;</span></span></span></span></div><div><span class="text html php"><span class="meta embedded block php"><span class="punctuation section embedded end php"><span class="source php">?</span>&gt;</span></span><span class="punctuation whitespace embedded trailing php"></span></span></div></code></pre>
+</table><h4>
+<a name="user-content-php%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0" class="anchor" href="#php%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>PHP模拟实现</h4>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+  <span class="c1">//模拟实现base64加密</span>
+  <span class="nv">$base64</span><span class="o">=</span><span class="s1">'ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'</span><span class="p">;</span>
+
+  <span class="c1">//1个字节测试</span>
+  <span class="c1">//echo implode(array_map(function($v) use($base64){return $base64[bindec(str_pad($v,8,'0',STR_PAD_LEFT))];},str_split(sprintf("0%b",ord('a')).'0000',6)),'')."==\n";</span>
+
+  <span class="c1">//2个字节测试</span>
+  <span class="c1">//echo implode(array_map(function($v) use($base64){ return $base64[bindec($v)];},str_split(implode(array_map(function($v){ return sprintf('0%b',ord($v)) ;},str_split('bc',1))).'00',6)),'')."=\n";</span>
+
+  <span class="c1">//3个字节测试</span>
+  <span class="k">echo</span> <span class="nb">implode</span><span class="p">(</span><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$v</span><span class="p">)</span> <span class="k">use</span><span class="p">(</span><span class="nv">$base64</span><span class="p">){</span> <span class="k">return</span> <span class="nv">$base64</span><span class="p">[</span><span class="nb">bindec</span><span class="p">(</span><span class="nv">$v</span><span class="p">)];</span> <span class="p">},</span><span class="nb">str_split</span><span class="p">(</span><span class="nb">implode</span><span class="p">(</span><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$v</span><span class="p">){</span> <span class="k">return</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s1">'0%b'</span><span class="p">,</span><span class="nb">ord</span><span class="p">(</span><span class="nv">$v</span><span class="p">));</span> <span class="p">},</span><span class="nb">str_split</span><span class="p">(</span><span class="s1">'Man'</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="s1">''</span><span class="p">),</span><span class="mi">6</span><span class="p">)))</span><span class="o">.</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></body></html>
