@@ -1,4 +1,5 @@
-typicode/json-server<br>
+typicode/json-server:虚拟的REST API的类库、快速“伪造” REST API
+
 jingweno/ccat
 Bilibili/ijkplayer
 fat/zoom.js
