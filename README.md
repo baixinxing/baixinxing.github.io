@@ -1,4 +1,0 @@
-baixinxing.github.io
-====================
-
-Blog
